@@ -20,7 +20,29 @@
     .tg { background:#0088cc; }
     .call { background:#10B981; }
   </style>
-</head>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAbVDLBjk8vgE43Xe3byXWpVbHtmOHeabU",
+    authDomain: "handart-pwa.firebaseapp.com",
+    projectId: "handart-pwa",
+    storageBucket: "handart-pwa.firebasestorage.app",
+    messagingSenderId: "356732756671",
+    appId: "1:356732756671:web:3b567b93c8bd9993c8dc0a",
+    measurementId: "G-HPPNL7DH3H"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script></head>
 <body>
   <header>🎨 HandArt Market</header>
   <div class="search-bar">
