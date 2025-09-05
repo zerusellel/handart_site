@@ -1,204 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="am">
 <head>
-    <meta charset="UTF-8">
-    <title>HandArt Market</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- IMPORTANT: Load Firebase the GLOBAL way (not as a module) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-    
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa; }
-        h1 { color: #10B981; }
-        form { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: auto; }
-        input, select, button { display: block; width: 100%; margin: 10px 0; padding: 10px; }
-        button { background: #10B981; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #059669; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HandArt Market Intro</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    img.logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+    .message {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      line-height: 1.8;
+    }
+    button {
+      background: white;
+      color: #059669;
+      font-size: 1.1rem;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #f0fdf4;
+    }
+  </style>
 </head>
 <body>
-    <h1>🎨 HandArt Market</h1>
-    <p>Post your product (photo + optional video + contact). Buyers will see it once approved.</p>
-
-    <form id="productForm">
-        <input type="text" id="name" placeholder="Product Name" required>
-        <input type="text" id="price" placeholder="Price (e.g. 300 ETB)" required>
-        <select id="category">
-            <option value="Jewelry">Jewelry</option>
-            <option value="Wood">Wood</option>
-            <option value="Textile">Textile</option>
-            <option value="Ceramics">Ceramics</option>
-            <option value="Other">Other</option>
-        </select>
-        <input type="url" id="imageUrl" placeholder="Image URL (must be public)" required>
-        <input type="url" id="video" placeholder="Video URL (optional)">
-        <input type="tel" id="phone" placeholder="Phone (+251...)" required>
-        <input type="url" id="whatsapp" placeholder="WhatsApp link (https://wa.me/...)" required>
-        <input type="url" id="telegram" placeholder="Telegram link (https://t.me/...)" required>
-        <button type="submit">Submit Product</button>
-    </form>
-
-    <!-- The JavaScript code that will WORK -->
-    <script>
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD72Ny7MPAlsc63N-a-cun26HzeiunuErs",
-            authDomain: "handart-market.firebaseapp.com",
-            projectId: "handart-market",
-            storageBucket: "handart-market.firebasestorage.app",
-            messagingSenderId: "686895804385",
-            appId: "1:686895804385:web:8c175751e129d68f9a2ca0",
-            measurementId: "G-RSMXGG3LJZ"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        // Initialize Cloud Firestore and get a reference to the service
-        const db = firebase.firestore();
-
-        // Function to handle form submission
-        async function submitProduct(event) {
-            event.preventDefault();
-
-            const name = document.getElementById("name").value;
-            const price = document.getElementById("price").value;
-            const category = document.getElementById("category").value;
-            const imageUrl = document.getElementById("imageUrl").value;
-            const video = document.getElementById("video").value;
-            const phone = document.getElementById("phone").value;
-            const whatsapp = document.getElementById("whatsapp").value;
-            const telegram = document.getElementById("telegram").value;
-
-            try {
-                await db.collection("submissions").add({
-                    name, price, category, imageUrl, video, phone, whatsapp, telegram,
-                    createdAt: new Date().toISOString()
-                });
-                alert("✅ Product submitted! Pending approval.");
-                document.getElementById("productForm").reset();
-            } catch (e) {
-                alert("❌ Error: " + e);
-            }
-        }
-
-        // Connect the form to the function
-        document.getElementById("productForm").addEventListener("submit", submitProduct);
-    </script>
-<h2>🎨 Submit Your Product</h2>
-<form id="productForm">
-  <input type="text" id="name" placeholder="Product Name" required><br>
-  <input type="text" id="price" placeholder="Price (e.g. 200 ETB)" required><br>
-  <input type="text" id="category" placeholder="Category (e.g. Jewelry)" required><br>
-  <input type="text" id="imageUrl" placeholder="Image URL (from ImgBB/Imgur)" required><br>
-  <input type="text" id="video" placeholder="Video URL (optional)"><br>
-  <input type="text" id="phone" placeholder="Phone Number" required><br>
-  <input type="text" id="whatsapp" placeholder="WhatsApp Link (https://wa.me/...)" required><br>
-  <input type="text" id="telegram" placeholder="Telegram @handle"><br>
-  <button type="submit">Submit Product</button>
-</form>
-
-<p id="status"></p>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAvbVDLBjKvgE43Xe3byXWpVbHtmOHeaUb",
-    authDomain: "handart-pwa.firebaseapp.com",
-    projectId: "handart-pwa",
-    storageBucket: "handart-pwa.appspot.com",
-    messagingSenderId: "356732756671",
-    appId: "1:356732756671:web:3b567b93c8bd9993c8dc0a",
-    measurementId: "G-HPPNL7DH3H"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const form = document.getElementById("productForm");
-  const status = document.getElementById("status");
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try {
-      await addDoc(collection(db, "submissions"), {
-        name: form.name.value,
-        price: form.price.value,
-        category: form.category.value,
-        imageUrl: form.imageUrl.value,
-        video: form.video.value,
-        phone: form.phone.value,
-        whatsapp: form.whatsapp.value,
-        telegram: form.telegram.value,
-      });
-      status.innerText = "✅ Submitted! Pending approval.";
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      status.innerText = "❌ Error submitting.";
-    }
-  });
-</script>
-<h2>🛍️ Products for Sale</h2>
-<div id="productList"></div>
-
-<script type="module">
-  import { getDocs, collection } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
-  const db = getFirestore();
-
-  // Load saved favorites from localStorage
-  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-  function toggleFavorite(id, name) {
-    if (favorites.includes(id)) {
-      favorites = favorites.filter(f => f !== id);
-      alert(`❌ Removed from favorites: ${name}`);
-    } else {
-      favorites.push(id);
-      alert(`❤️ Saved to favorites: ${name}`);
-    }
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    loadProducts(); // Refresh icons
-  }
-
-  async function loadProducts() {
-    const productList = document.getElementById("productList");
-    productList.innerHTML = "⏳ Loading products...";
-
-    const querySnapshot = await getDocs(collection(db, "items"));
-    productList.innerHTML = "";
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      const isFavorite = favorites.includes(doc.id);
-
-      const card = document.createElement("div");
-      card.innerHTML = `
-        <div style="border:1px solid #ddd; margin:10px; padding:10px; border-radius:8px;">
-          <h3>${data.name}</h3>
-          <p>💰 ${data.price}</p>
-          <p>📂 ${data.category}</p>
-          <img src="${data.imageUrl}" width="200"><br>
-          ${data.video ? `<video src="${data.video}" width="200" controls></video><br>` : ""}
-          <p>📞 ${data.phone}</p>
-          <a href="${data.whatsapp}" target="_blank">WhatsApp</a> | 
-          <a href="https://t.me/${data.telegram}" target="_blank">Telegram</a>
-          <br><br>
-          <button onclick="(${toggleFavorite.toString()})('${doc.id}', '${data.name}')">
-            ${isFavorite ? "❤️ Unsave" : "🤍 Save"}
-          </button>
-        </div>
-      `;
-      productList.appendChild(card);
-    });
-  }
-
-  loadProducts();
-</script>
+  <img src="https://i.ibb.co/zrFmFZh/art-logo.png" alt="HandArt Logo" class="logo">
+  <div class="message">
+    Selam 👋<br>
+    በአካባቢ እጅ ስራ አቅራቢዎችን ለደንበኞች እየገናኘ የሚረዳ አዲስ የድግግሞሽ (PWA) ንብረት መደብ ፈጥሬ አስጀምሬዋለሁ:<br>
+    <strong>ፎቶ + ዋጋ + እውቂያ (WhatsApp/Telegram/Call)</strong> ያለው ቀላል መደብ ነው።<br>
+    ከመጀመሪያው 10 አቅራቢዎች ለመሞከር ነጻ እጨምራለሁ። ምርቶችዎን እንጨምር?
+  </div>
+  <button onclick="location.href='market.html'">👉 Go to Marketplace</button>
 </body>
 </html>
