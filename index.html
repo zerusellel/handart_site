@@ -151,6 +151,21 @@
 
   const db = getFirestore();
 
+  // Load saved favorites from localStorage
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  function toggleFavorite(id, name) {
+    if (favorites.includes(id)) {
+      favorites = favorites.filter(f => f !== id);
+      alert(`❌ Removed from favorites: ${name}`);
+    } else {
+      favorites.push(id);
+      alert(`❤️ Saved to favorites: ${name}`);
+    }
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    loadProducts(); // Refresh icons
+  }
+
   async function loadProducts() {
     const productList = document.getElementById("productList");
     productList.innerHTML = "⏳ Loading products...";
@@ -160,6 +175,8 @@
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
+      const isFavorite = favorites.includes(doc.id);
+
       const card = document.createElement("div");
       card.innerHTML = `
         <div style="border:1px solid #ddd; margin:10px; padding:10px; border-radius:8px;">
@@ -171,6 +188,10 @@
           <p>📞 ${data.phone}</p>
           <a href="${data.whatsapp}" target="_blank">WhatsApp</a> | 
           <a href="https://t.me/${data.telegram}" target="_blank">Telegram</a>
+          <br><br>
+          <button onclick="(${toggleFavorite.toString()})('${doc.id}', '${data.name}')">
+            ${isFavorite ? "❤️ Unsave" : "🤍 Save"}
+          </button>
         </div>
       `;
       productList.appendChild(card);
