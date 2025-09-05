@@ -142,5 +142,42 @@
     }
   });
 </script>
+<h2>🛍️ Products for Sale</h2>
+<div id="productList"></div>
+
+<script type="module">
+  import { getDocs, collection } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+  const db = getFirestore();
+
+  async function loadProducts() {
+    const productList = document.getElementById("productList");
+    productList.innerHTML = "⏳ Loading products...";
+
+    const querySnapshot = await getDocs(collection(db, "items"));
+    productList.innerHTML = "";
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const card = document.createElement("div");
+      card.innerHTML = `
+        <div style="border:1px solid #ddd; margin:10px; padding:10px; border-radius:8px;">
+          <h3>${data.name}</h3>
+          <p>💰 ${data.price}</p>
+          <p>📂 ${data.category}</p>
+          <img src="${data.imageUrl}" width="200"><br>
+          ${data.video ? `<video src="${data.video}" width="200" controls></video><br>` : ""}
+          <p>📞 ${data.phone}</p>
+          <a href="${data.whatsapp}" target="_blank">WhatsApp</a> | 
+          <a href="https://t.me/${data.telegram}" target="_blank">Telegram</a>
+        </div>
+      `;
+      productList.appendChild(card);
+    });
+  }
+
+  loadProducts();
+</script>
 </body>
 </html>
