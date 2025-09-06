@@ -42,3 +42,25 @@ body {
   background: #059669;
 }
 .market-button { background-color: #yourcolor; padding: 10px 20px; border: none; cursor: pointer; }
+.marketplace {
+  background: white; /* Or keep green: #10B981 */
+  color: black;
+  padding: 20px;
+  text-align: center;
+}
+.product-list {
+  list-style: none;
+  padding: 0;
+}
+.product-list li {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+.back-btn {
+  background: #059669;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+}
